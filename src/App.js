@@ -1,23 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+
+import BottomCard from "./components/BottomCard";
+import Filters from "./components/Filters";
+import Heading from "./components/Heading";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import { v4 as uuid } from 'uuid';
 
 function App() {
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = (name) => {
+    setTodos([
+      ...todos,
+      {
+        id: uuid(),
+        name: name,
+        completed: false
+      }
+    ]);
+  }
+
+  const removeTodo = (id) => {
+    const filteredTodos = todos.filter(todo => todo.id !== id);
+    setTodos(filteredTodos);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Heading>Adriaan's todo</Heading>
+      <TodoForm addTodo={addTodo} />
+      <BottomCard>
+        {
+          todos.length ?
+          <>
+            <Filters />
+            <TodoList handleDelete={removeTodo} todos={todos} />
+          </>
+          :
+          <p>
+            Er zijn nog geen todo’s toegevoegd.
+          </p>
+        }
+      </BottomCard>
     </div>
   );
 }
