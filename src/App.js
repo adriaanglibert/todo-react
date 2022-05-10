@@ -38,6 +38,18 @@ function App() {
     }))
   }
 
+  const editTodo = (id, newName) => {
+    setTodos(todos.map(todo => {
+      if (id === todo.id) {
+        return {
+          ...todo,
+          name: newName
+        }
+      }
+      return todo;
+    }))
+  }
+
   return (
     <div className="App">
       <Heading>Adriaan's todo</Heading>
@@ -55,6 +67,7 @@ function App() {
             <TodoList
               todos={todos}
               handleDelete={removeTodo}
+              handleEdit={editTodo}
               handleToggleComplete={toggleCompleted}
               />
           </>

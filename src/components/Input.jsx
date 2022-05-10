@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Input = ({value, handleChange}) => {
+const Input = React.forwardRef(({value, handleChange}, ref) => {
   return (
       <label>
           <span>Voeg todo toe</span>
-          <input value={value} onChange={handleChange} type="text" name="todo" />
+          <input ref={ref} value={value} onChange={handleChange} type="text" name="todo" />
       </label>
   )
-}
+});
 
 export default Input

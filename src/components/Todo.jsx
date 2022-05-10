@@ -1,31 +1,61 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useEffect, useRef } from "react";
 
-const Todo = ({todo, handleDelete, handleToggleComplete}) => {
-  const {id, completed, name} = todo;
+import Input from "./Input";
+import { useState } from "react";
+
+const Todo = ({ todo, handleDelete, handleEdit, handleToggleComplete }) => {
+  const { id, completed, name } = todo;
+  const [newName, setNewName] = useState(name);
   const [checked, setChecked] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const editField = useRef(null);
 
-const handleClick = (id) => {
+  const handleDeleteButton = (id) => {
     handleDelete(id);
-}
+  };
 
-const handleCheck = (isChecked) => {
-  setChecked(isChecked);
-  handleToggleComplete(id, isChecked);
-}
+  const handleEditButton = () => {
+    setIsEditing(true);
+    console.log(editField);
+  };
+
+  const handleSaveButton  = () => {
+    handleEdit(id, newName);
+    setIsEditing(false);
+  }
+
+  const handleCheck = (isChecked) => {
+    setChecked(isChecked);
+    handleToggleComplete(id, isChecked);
+  };
+
+  useEffect(() => {
+    if (isEditing) {
+      editField.current.focus();
+    }
+  }, [isEditing])
 
   return (
     <li>
-      <input
-        checked={checked}
-        onChange={(e) => handleCheck(e.target.checked)}
-        type="checkbox" />
-      {name}
-      <button onClick={() => handleClick(id)}>
-          del
-      </button>
+      {!isEditing ? (
+        <>
+          <input
+            checked={checked}
+            onChange={(e) => handleCheck(e.target.checked)}
+            type="checkbox"
+          />
+          {name}
+          <button onClick={() => handleDeleteButton(id)}>del</button>
+          <button onClick={handleEditButton}>edit</button>
+        </>
+      ) : (
+        <>
+          <Input value={newName} handleChange={e => setNewName(e.target.value)} ref={editField} />
+          <button onClick={handleSaveButton}>save</button>
+        </>
+      )}
     </li>
-  )
-}
+  );
+};
 
-export default Todo
+export default Todo;
