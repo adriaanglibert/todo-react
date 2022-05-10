@@ -40,6 +40,18 @@ function App() {
     setTodos(updatedTodos);
   }
 
+  const editTodo = (id, newName) => {
+    setTodos(todos.map(todo => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          name: newName
+        }
+      }
+      return todo;
+    }));
+  }
+
   return (
     <div className="App">
       <Heading>Adriaan's todo</Heading>
@@ -52,6 +64,7 @@ function App() {
             <TodoList
               handleToggleCompleted={toggleCompleted}
               handleDelete={removeTodo}
+              handleEdit={editTodo}
               todos={todos} />
           </>
           :

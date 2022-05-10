@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
-const Todo = ({ todo, handleDelete, handleToggleCompleted }) => {
-  const { id, completed, name } = todo;
+const Todo = ({ todo, handleDelete, handleToggleCompleted, handleEdit }) => {
+  const { id, name } = todo;
   const [checked, setChecked] = useState(todo.completed);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newName, setNewName] = useState(name);
 
   const handleClick = (id) => {
     handleDelete(id);
@@ -13,11 +15,29 @@ const Todo = ({ todo, handleDelete, handleToggleCompleted }) => {
     handleToggleCompleted(id);
   };
 
+  const handleSave = () => {
+    setIsEditing(false);
+    handleEdit(id, newName);
+  }
+
   return (
     <li>
-      <input checked={checked} onChange={handleChange} type="checkbox" />
-      {name}
-      <button onClick={() => handleClick(id)}>del</button>
+      {
+        isEditing ?
+        <>
+          <input value={newName} onChange={e => setNewName(e.target.value)} type="text"/>
+          <button onClick={() => handleSave()}>
+            Save
+          </button>
+        </>
+        :
+        <>
+          <input checked={checked} onChange={handleChange} type="checkbox" />
+          {name}
+          <button onClick={() => setIsEditing(true)}>edit</button>
+          <button onClick={() => handleClick(id)}>del</button>
+        </>
+      }
     </li>
   );
 };
