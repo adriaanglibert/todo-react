@@ -1,17 +1,30 @@
 import React from 'react'
+import { useState } from 'react';
 
-const Todo = ({todo, handleDelete}) => {
-const {id, completed, name} = todo;
+const Todo = ({todo, handleDelete, handleToggleComplete}) => {
+  const {id, completed, name} = todo;
+  const [checked, setChecked] = useState(false);
 
 const handleClick = (id) => {
     handleDelete(id);
 }
 
+const handleCheck = (isChecked) => {
+  setChecked(isChecked);
+  handleToggleComplete(id, isChecked);
+}
+
   return (
-    <li>{name}
-    <button onClick={() => handleClick(id)}>
-        del
-    </button></li>
+    <li>
+      <input
+        checked={checked}
+        onChange={(e) => handleCheck(e.target.checked)}
+        type="checkbox" />
+      {name}
+      <button onClick={() => handleClick(id)}>
+          del
+      </button>
+    </li>
   )
 }
 
