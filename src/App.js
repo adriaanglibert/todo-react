@@ -26,6 +26,20 @@ function App() {
     setTodos(filteredTodos);
   }
 
+  const toggleCompleted = (id) => {
+    const updatedTodos = todos.map(todo => {
+      if (id === todo.id) {
+        return {
+          ...todo,
+          completed: !todo.completed
+        };
+      }
+      return todo;
+    });
+
+    setTodos(updatedTodos);
+  }
+
   return (
     <div className="App">
       <Heading>Adriaan's todo</Heading>
@@ -35,7 +49,10 @@ function App() {
           todos.length ?
           <>
             <Filters />
-            <TodoList handleDelete={removeTodo} todos={todos} />
+            <TodoList
+              handleToggleCompleted={toggleCompleted}
+              handleDelete={removeTodo}
+              todos={todos} />
           </>
           :
           <p>
