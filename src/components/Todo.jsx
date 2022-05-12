@@ -1,4 +1,20 @@
+import { FiEdit, FiSave, FiTrash2 } from "react-icons/fi";
 import React, { useState } from "react";
+import { colors, sizes } from "../constants/styles";
+
+import Checkbox from "./Checkbox";
+import IconButton from "./IconButton";
+import Input from "./Input";
+import styled from "styled-components";
+
+const ListItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  min-height: 80px;
+  border-bottom: 1px solid ${colors.dark};
+`;
 
 const Todo = ({ todo, handleDelete, handleToggleCompleted, handleEdit }) => {
   const { id, name } = todo;
@@ -18,27 +34,57 @@ const Todo = ({ todo, handleDelete, handleToggleCompleted, handleEdit }) => {
   const handleSave = () => {
     setIsEditing(false);
     handleEdit(id, newName);
-  }
+  };
 
   return (
-    <li>
-      {
-        isEditing ?
+    <ListItem as="li">
+      {isEditing ? (
         <>
-          <input value={newName} onChange={e => setNewName(e.target.value)} type="text"/>
-          <button onClick={() => handleSave()}>
-            Save
-          </button>
+          <Input
+            showBorder={true}
+            value={newName}
+            handleChange={(e) => setNewName(e.target.value)}
+            name="todo"
+          />
+          <IconButton
+            color={colors.succes}
+            size="2rem"
+            icon={<FiSave />}
+            margin={`0 0 0 ${sizes.sm}`}
+            handleClick={() => handleSave()}
+          >
+            Save todo
+          </IconButton>
         </>
-        :
+      ) : (
         <>
-          <input checked={checked} onChange={handleChange} type="checkbox" />
-          {name}
-          <button onClick={() => setIsEditing(true)}>edit</button>
-          <button onClick={() => handleClick(id)}>del</button>
+          <Checkbox
+            label={name}
+            checked={checked}
+            handleChange={handleChange}
+            type="checkbox"
+          />
+
+          <div>
+            <IconButton
+              color={colors.gray}
+              icon={<FiEdit />}
+              handleClick={() => setIsEditing(true)}
+            >
+              Edit todo
+            </IconButton>
+
+            <IconButton
+              color={colors.danger}
+              icon={<FiTrash2 />}
+              handleClick={() => handleClick(id)}
+            >
+              Delete todo
+            </IconButton>
+          </div>
         </>
-      }
-    </li>
+      )}
+    </ListItem>
   );
 };
 

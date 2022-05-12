@@ -1,14 +1,38 @@
-import React, {useState} from "react";
+import './App.css';
+
+import React, { useEffect, useState } from "react";
+import { global, lightTheme, sizes } from './constants/styles';
+import styled, { ThemeProvider } from 'styled-components';
 
 import BottomCard from "./components/BottomCard";
-import Filters from "./components/Filters";
+import Center from './components/Center';
 import Heading from "./components/Heading";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import { v4 as uuid } from 'uuid';
 
+const Parent = styled.div`
+  font-family: ${global.bodyFamily};
+  font-size: ${sizes.base};
+  background-color: ${props => props.theme.body};
+  color: ${props => props.theme.text};
+  min-height: 100vh;
+`;
+
+const ParentColumn = styled(Parent)`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Sticky = styled.div`
+  position: sticky;
+  top: 0;
+  left: 0;
+`
+
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) ?? []);
+  const [theme,] = useState(lightTheme);
 
   const addTodo = (name) => {
     setTodos([
@@ -52,28 +76,39 @@ function App() {
     }));
   }
 
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
   return (
-    <div className="App">
-      <Heading>Adriaan's todo</Heading>
-      <TodoForm addTodo={addTodo} />
-      <BottomCard>
-        {
-          todos.length ?
-          <>
-            <Filters />
-            <TodoList
-              handleToggleCompleted={toggleCompleted}
-              handleDelete={removeTodo}
-              handleEdit={editTodo}
-              todos={todos} />
-          </>
-          :
-          <p>
-            Er zijn nog geen todo’s toegevoegd.
-          </p>
-        }
-      </BottomCard>
-    </div>
+    <ThemeProvider theme={theme}>
+      <ParentColumn>
+        <Sticky>
+          <Center padding={`${sizes.xl} ${sizes.base}`}>
+            <Heading margin={`0 auto ${sizes.xl} auto`}>Adriaan's todo</Heading>
+            <TodoForm addTodo={addTodo} />
+          </Center>
+        </Sticky>
+
+        <BottomCard>
+          {
+            todos.length ?
+              <>
+                {/* <Filters /> */}
+                <TodoList
+                  handleToggleCompleted={toggleCompleted}
+                  handleDelete={removeTodo}
+                  handleEdit={editTodo}
+                  todos={todos} />
+              </>
+              :
+              <Center padding={`${sizes.xl} ${sizes.md}`}>
+                Er zijn nog geen todo’s toegevoegd.
+              </Center>
+          }
+        </BottomCard>
+      </ParentColumn>
+    </ThemeProvider>
   );
 }
 

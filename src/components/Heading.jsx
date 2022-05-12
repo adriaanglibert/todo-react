@@ -1,9 +1,17 @@
-import React from 'react'
+import { colors, global, sizes } from "../constants/styles";
 
-const Heading = ({children}) => {
-  return (
-    <h1>{children}</h1>
-  )
-}
+import React from "react";
+import styled from "styled-components";
 
-export default Heading
+const Title = styled.h1`
+  font-family: ${global.displayFamily};
+  color: ${(props) => props.color ?? colors.light};
+  font-size: ${sizes.lg};
+  margin: ${(props) => props.margin ?? `0 auto ${sizes.md} auto`};
+`;
+
+const Heading = ({ children, margin }) => {
+  return <Title margin={margin}>{children}</Title>;
+};
+
+export default Heading;
