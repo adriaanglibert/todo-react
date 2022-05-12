@@ -1,1 +1,1 @@
-export const TODO_API = 'https://raw.githubusercontent.com/adriaanglibert/todo-react/main/data/todos.json';
+export const TODO_API = 'https://adriaanglibert.github.io/todo-react/todos.json';

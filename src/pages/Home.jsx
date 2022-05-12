@@ -82,6 +82,10 @@ function Home() {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
+  useEffect(() => {
+    setTodos(data)
+  }, [data]);
+
   return (
     <ParentColumn>
       <Sticky>

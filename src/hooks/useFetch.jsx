@@ -6,19 +6,10 @@ const useFetch = (url) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(url, {
-        mode: 'no-cors',
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods":
-          "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-        "Access-Control-Allow-Headers":
-          "X-Requested-With, Content-Type, Authorization",
-      },
-    })
+    fetch(url)
       .then((response) => {
         if (!response.ok) {
-            setError(response.message);
+          throw new Error(response.statusText);
         }
         return response.json();
       })
