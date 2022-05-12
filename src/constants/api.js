@@ -1,0 +1,1 @@
+export const TODO_API = 'https://raw.githubusercontent.com/adriaanglibert/todo-react/main/data/todos.json';

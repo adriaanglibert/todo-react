@@ -1,12 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
+import { colors, sizes } from "../constants/styles";
 
 import { ROUTES } from "../constants/routes";
 import React from "react";
-import { sizes } from "../constants/styles";
 import styled from "styled-components";
 
 const NavContainer = styled.nav`
-  margin-left: ${sizes.lg};
+  background: ${colors.secondary};
 `;
 
 const NavList = styled.ul`

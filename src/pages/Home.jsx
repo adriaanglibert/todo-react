@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { global, sizes } from '../constants/styles';
+import { global, sizes } from "../constants/styles";
 
 import BottomCard from "../components/BottomCard";
-import Center from '../components/Center';
+import Center from "../components/Center";
 import Heading from "../components/Heading";
+import { TODO_API } from "../constants/api";
 import TodoForm from "../components/TodoForm";
 import TodoList from "../components/TodoList";
-import styled from 'styled-components';
-import { v4 as uuid } from 'uuid';
+import styled from "styled-components";
+import useFetch from "../hooks/useFetch";
+import { v4 as uuid } from "uuid";
 
 const Parent = styled.div`
   font-family: ${global.bodyFamily};
   font-size: ${sizes.base};
-  background-color: ${props => props.theme.body};
-  color: ${props => props.theme.text};
+  background-color: ${(props) => props.theme.body};
+  color: ${(props) => props.theme.text};
   min-height: 100vh;
 `;
 
@@ -26,10 +28,11 @@ const Sticky = styled.div`
   position: sticky;
   top: 0;
   left: 0;
-`
+`;
 
 function Home() {
-  const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) ?? []);
+  const [data, error, loading] = useFetch(TODO_API);
+  const [todos, setTodos] = useState(data);
 
   const addTodo = (name) => {
     setTodos([
@@ -37,44 +40,46 @@ function Home() {
       {
         id: uuid(),
         name: name,
-        completed: false
-      }
+        completed: false,
+      },
     ]);
-  }
+  };
 
   const removeTodo = (id) => {
-    const filteredTodos = todos.filter(todo => todo.id !== id);
+    const filteredTodos = todos.filter((todo) => todo.id !== id);
     setTodos(filteredTodos);
-  }
+  };
 
   const toggleCompleted = (id) => {
-    const updatedTodos = todos.map(todo => {
+    const updatedTodos = todos.map((todo) => {
       if (id === todo.id) {
         return {
           ...todo,
-          completed: !todo.completed
+          completed: !todo.completed,
         };
       }
       return todo;
     });
 
     setTodos(updatedTodos);
-  }
+  };
 
   const editTodo = (id, newName) => {
-    setTodos(todos.map(todo => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          name: newName
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            name: newName,
+          };
         }
-      }
-      return todo;
-    }));
-  }
+        return todo;
+      })
+    );
+  };
 
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
+    localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
   return (
@@ -87,21 +92,23 @@ function Home() {
       </Sticky>
 
       <BottomCard>
-        {
-          todos.length ?
-            <>
-              {/* <Filters /> */}
-              <TodoList
-                handleToggleCompleted={toggleCompleted}
-                handleDelete={removeTodo}
-                handleEdit={editTodo}
-                todos={todos} />
-            </>
-            :
-            <Center padding={`${sizes.xl} ${sizes.md}`}>
-              Er zijn nog geen todo’s toegevoegd.
-            </Center>
-        }
+        {error ? (
+          <Center padding={`${sizes.xl} ${sizes.md}`}>
+            Er is iets misgegaan: {error}
+          </Center>
+        ) : (loading || !todos) && !error ? (
+          <Center padding={`${sizes.xl} ${sizes.md}`}>Loading</Center>
+        ) : (
+          <>
+            {/* <Filters /> */}
+            <TodoList
+              handleToggleCompleted={toggleCompleted}
+              handleDelete={removeTodo}
+              handleEdit={editTodo}
+              todos={todos}
+            />
+          </>
+        )}
       </BottomCard>
     </ParentColumn>
   );
