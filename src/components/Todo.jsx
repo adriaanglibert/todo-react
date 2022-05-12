@@ -5,7 +5,9 @@ import { colors, sizes } from "../constants/styles";
 import Checkbox from "./Checkbox";
 import IconButton from "./IconButton";
 import Input from "./Input";
+import { ROUTES } from '../constants/routes';
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const ListItem = styled.div`
   display: flex;
@@ -17,6 +19,7 @@ const ListItem = styled.div`
 `;
 
 const Todo = ({ todo, handleDelete, handleToggleCompleted, handleEdit }) => {
+  const navigate = useNavigate();
   const { id, name } = todo;
   const [checked, setChecked] = useState(todo.completed);
   const [isEditing, setIsEditing] = useState(false);
