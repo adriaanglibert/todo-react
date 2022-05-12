@@ -1,5 +1,5 @@
 export const global = Object.freeze({
-    bodyFamily: "'Poppins', serif",
+    bodyFamily: "'Poppins', sans-serif",
     displayFamily: "'PP Woodland', serif"
 });
 
