@@ -3,3 +3,17 @@
 body {
     margin: 0;
 }
+
+@font-face {
+    font-family: 'PP WoodLand';
+    src:    local('PP Woodland'),
+            url(./fonts/PPWoodland.woff) format("woff"),
+            url(./fonts/PPWoodland.woff2) format("woff2");
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src:    local('Poppins'),
+            url(./fonts/poppins.woff) format("woff"),
+            url(./fonts/poppins.woff2) format("woff2");
+}
