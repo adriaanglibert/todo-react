@@ -18,6 +18,10 @@ const ListItem = styled.div`
   border-bottom: 1px solid ${colors.dark};
 `;
 
+const Actions = styled.div`
+  flex-shrink: 0;
+`;
+
 const Todo = ({ todo, handleDelete, handleToggleCompleted, handleEdit }) => {
   const navigate = useNavigate();
   const { id, name } = todo;
@@ -68,7 +72,7 @@ const Todo = ({ todo, handleDelete, handleToggleCompleted, handleEdit }) => {
             type="checkbox"
           />
 
-          <div>
+          <Actions>
             <IconButton
               color={colors.gray}
               icon={<FiEdit />}
@@ -84,7 +88,7 @@ const Todo = ({ todo, handleDelete, handleToggleCompleted, handleEdit }) => {
             >
               Delete todo
             </IconButton>
-          </div>
+          </Actions>
         </>
       )}
     </ListItem>

@@ -1,34 +1,17 @@
-import Button from "./Button";
-import Center from "./Center";
-import Input from "./Input";
+import Form from './Form';
 import React from "react";
-import { sizes } from "../constants/styles";
-import { useState } from "react";
+import useInput from "../hooks/useInput";
 
 const TodoForm = ({ addTodo }) => {
-  const [name, setName] = useState("");
-
-  const handleSubmit = (e, name) => {
-    e.preventDefault();
-    addTodo(name);
-    setName("");
-  };
-
-  const handleChange = (e) => {
-    setName(e.target.value);
-  };
+  const [name, handleChange, handleSubmit] = useInput(addTodo);
 
   return (
-    <form onSubmit={(e) => handleSubmit(e, name)}>
-      <Center>
-        <Input
-          label="Voeg een todo toe"
-          value={name}
-          handleChange={handleChange}
-        />
-        <Button margin={`${sizes.md} 0 0 0`}>Opslaan</Button>
-      </Center>
-    </form>
+    <Form
+      label="Voeg een todo toe"
+      handleSubmit={(e) => handleSubmit(e, name)}
+      value={name}
+      handleChange={handleChange}
+    />
   );
 };
 
